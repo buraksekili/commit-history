@@ -1,0 +1,12 @@
+.pagination-button {
+  font-size: 3em;
+  transition:all .5s ease;
+  margin: 5px;
+}
+
+.pagination-button:hover {
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+  transition:all .5s ease;
+}
