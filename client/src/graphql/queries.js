@@ -7,6 +7,7 @@ export const GET_COMMITS = gql`
         messageHeadline
         message
         pushedDate
+        oid
         abbreviatedOid
         parentHash
         author {
@@ -19,6 +20,31 @@ export const GET_COMMITS = gql`
       startCursor
       hasNextPage
       hasPreviousPage
+    }
+  }
+`;
+
+export const GET_COMMIT_DETAILS = gql`
+  query($oid: String!) {
+    getCommitDetail(oid: $oid) {
+      message
+      messageHeadline
+      pushedDate
+      parentHash
+      additions
+      deletions
+      commitUrl
+      files {
+        filename
+        blob_url
+        additions
+        deletions
+      }
+      author {
+        name
+        avatarUrl
+        email
+      }
     }
   }
 `;

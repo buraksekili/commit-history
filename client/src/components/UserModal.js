@@ -19,7 +19,6 @@ const UserModal = ({ isModalVisible, handleOk, handleCancel, author }) => {
           title={`${author.name} profile`}
           visible={isModalVisible}
           onOk={handleOk}
-          onCancel={handleCancel}
         >
           <Row align="middle" justify="space-around">
             <Col>

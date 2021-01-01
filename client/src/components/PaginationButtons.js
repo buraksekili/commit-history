@@ -1,7 +1,7 @@
 import { BackwardOutlined, ForwardOutlined } from "@ant-design/icons";
 import { Row } from "antd";
 import React from "react";
-import "./PaginationButtons.css";
+import "./styles/PaginationButtons.css";
 
 const PaginationButtons = ({ handleNextPagination, handlePrevPagination }) => {
   return (

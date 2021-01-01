@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { Avatar, List } from "antd";
+import { Avatar, Col, List, Row } from "antd";
 import React, { useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { Link } from "react-router-dom";
 import PaginationButtons from "../components/PaginationButtons";
 import UserModal from "../components/UserModal";
 import { GET_COMMITS } from "../graphql/queries";
@@ -21,11 +21,11 @@ const Home = () => {
   const [number, setNumber] = useState(5);
   const { loading, data, refetch } = useQuery(GET_COMMITS, {
     variables: { number: 5, cursor: undefined, after: true },
+    fetchPolicy: "network-only",
   });
 
   const handleNextPagination = (e) => {
     e.preventDefault();
-    console.log(data.getCommits);
     refetch({
       number,
       cursor: data.getCommits.endCursor,
@@ -35,7 +35,6 @@ const Home = () => {
 
   const handlePrevPagination = (e) => {
     e.preventDefault();
-    console.log(data.getCommits);
     if (
       data.getCommits.startCursor.endsWith("1") ||
       !data.getCommits.hasPreviousPage
@@ -64,7 +63,7 @@ const Home = () => {
   return (
     <>
       {loading ? (
-        <LoadingSpinner />
+        console.log("loading")
       ) : (
         <>
           <List
@@ -87,12 +86,21 @@ const Home = () => {
                       }}
                     />
                   }
-                  title={commit.messageHeadline}
+                  title={
+                    <Row gutter={[8, 8]}>
+                      <Col>
+                        <Link to={`/commit/${commit.oid}`}>
+                          {commit.messageHeadline}
+                        </Link>
+                      </Col>
+                      <Col>Hash: {commit.abbreviatedOid}</Col>
+                    </Row>
+                  }
                   description={commit.message}
                 />
-                <List.Item.Meta description={commit.message} />
-                <p>Hash: {commit.abbreviatedOid}</p>
-                <p>Parent Hash:{commit.abbreviatedOid}</p>
+                <List.Item.Meta
+                  description={` Parent Hash: ${commit.parentHash}`}
+                />
               </List.Item>
             )}
           />
