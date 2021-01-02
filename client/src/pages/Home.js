@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect, useRef, useState } from "react";
+import Errors from "../components/Errors";
 import ListCustom from "../components/List-custom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { GET_COMMITS } from "../graphql/queries";
@@ -7,7 +8,7 @@ import { GET_COMMITS } from "../graphql/queries";
 const Home = ({ filterTerm }) => {
   const [number, setNumber] = useState(5);
 
-  const { loading, data, refetch } = useQuery(GET_COMMITS, {
+  const { loading, data, refetch, error } = useQuery(GET_COMMITS, {
     variables: { number, cursor: undefined, after: true },
     fetchPolicy: "no-cache",
   });
@@ -24,6 +25,10 @@ const Home = ({ filterTerm }) => {
       after: false,
     });
   }, [number]);
+
+  if (error && error.message.includes("401")) {
+    return <Errors error={error.message} />;
+  }
 
   if (!data || loading) {
     return <LoadingSpinner />;
