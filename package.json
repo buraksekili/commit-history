@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "localDev": "npm install && cd ./client && npm install",
+    "dev": "node index.js"
   },
   "author": "Burak Sekili",
   "license": "ISC",
