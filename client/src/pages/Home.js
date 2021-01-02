@@ -8,7 +8,7 @@ const Home = ({ filterTerm }) => {
   const [number, setNumber] = useState(5);
 
   const { loading, data, refetch } = useQuery(GET_COMMITS, {
-    variables: { number: number, cursor: undefined, after: true },
+    variables: { number, cursor: undefined, after: true },
     fetchPolicy: "no-cache",
   });
 

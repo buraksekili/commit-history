@@ -1,6 +1,7 @@
 import { Layout } from "antd";
 import React, { useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Errors from "./components/Errors";
 import Header from "./components/Header";
 import CommitDetails from "./pages/CommitDetails";
 import Home from "./pages/Home";
@@ -10,8 +11,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <Layout style={{ height: "100vh", overflow: "auto" }}>
+      <Layout style={{ height: "100vh", overflow: "auto" }}>
+        <Switch>
           <Route path="/" exact>
             <Header back={false} setFilterTerm={setFilterTerm} />
             <Home filterTerm={filterTerm} />
@@ -26,8 +27,12 @@ function App() {
               </>
             )}
           />
-        </Layout>
-      </Switch>
+          <Route path="/">
+            <Header back={true} />
+            <Errors error={"404: Page Not Found"} />
+          </Route>
+        </Switch>
+      </Layout>
     </BrowserRouter>
   );
 }
