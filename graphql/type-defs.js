@@ -7,25 +7,41 @@ const typeDefs = gql`
     email: String!
   }
 
+  type File {
+    filename: String
+    blob_url: String
+    additions: Int
+    deletions: Int
+  }
+
   type Commit {
     messageHeadline: String!
     message: String!
     pushedDate: String
+    oid: String
     abbreviatedOid: String!
     parentHash: String!
     author: Author!
+    additions: Int
+    deletions: Int
+    commitUrl: String
+
+    # If commit details are requsted, the files related
+    # with the commit will be stored as an array of File type
+    files: [File]
   }
 
   type Commits {
     commits: [Commit]!
     hasNextPage: Boolean!
-    endCursor: String!
+    hasPreviousPage: Boolean!
+    endCursor: String
+    startCursor: String
   }
 
   type Query {
-    getCommitsBefore(endCursor: String!, number: Int): Commits!
-    getCommitsAfter(endCursor: String, number: Int): Commits!
-    getFirstCommits(number: Int!): Commits!
+    getCommits(cursor: String, number: Int, after: Boolean!): Commits!
+    getCommitDetail(oid: String!): Commit
   }
 `;
 

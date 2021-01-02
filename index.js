@@ -2,10 +2,7 @@ require("dotenv").config();
 const { ApolloServer } = require("apollo-server");
 const { typeDefs, resolvers } = require("./graphql");
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+const server = new ApolloServer({ typeDefs, resolvers });
 
 server
   .listen({ port: 5000 })

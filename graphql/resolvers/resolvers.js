@@ -1,68 +1,105 @@
 const axios = require("axios");
 const {
-  getCommitsBefore,
-  getCommitsAfter,
-  getFirstCommits,
+  GET_COMMIT_DETAIL,
+  GET_COMMITS_BEFORE,
+  GET_COMMITS_AFTER,
 } = require("./commits");
-const { parseResponse } = require("../../util");
+const { parseResponse, parseCommitDetails } = require("../../util");
 const { headers, GITHUB_API_URL } = require("../../config");
+const { AuthenticationError } = require("apollo-server");
 
 const resolvers = {
   Query: {
-    async getCommitsAfter(_, { endCursor, number }) {
+    async getCommits(_, { cursor, number, after }) {
       if (!number) {
-        number = 3;
+        number = 5;
       }
-      const query = JSON.stringify(getCommitsAfter(endCursor, number));
-      try {
-        const response = await axios.post(GITHUB_API_URL, query, {
-          headers,
-        });
 
+      // If cursor is not specified, It means initial request to fetch
+      // a list of commits.
+      if (!cursor) {
+        const query = JSON.stringify({
+          query: GET_COMMITS_AFTER,
+          variables: { number },
+        });
+        try {
+          const res = await axios.post(GITHUB_API_URL, query, { headers });
+          if (res.data.errors) {
+            throw new Error(res.data.errors);
+          }
+          return parseResponse(res);
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            throw new AuthenticationError(
+              `Unauthorized GitHub access. ${error.response.status}`
+            );
+          }
+          throw new Error("Internal error happened" + error.message);
+        }
+      }
+
+      // If after is true, it means we need to fetch next ${number} commits
+      let query;
+      if (after) {
+        query = JSON.stringify({
+          query: GET_COMMITS_AFTER,
+          variables: { cursor, number },
+        });
+      } else {
+        query = JSON.stringify({
+          query: GET_COMMITS_BEFORE,
+          variables: { cursor, number },
+        });
+      }
+
+      try {
+        const response = await axios.post(GITHUB_API_URL, query, { headers });
         if (response.data.errors) {
           throw new Error(response.data.errors);
         }
-
-        const parsedRespone = parseResponse(response);
-        return parsedRespone;
+        return parseResponse(response);
       } catch (error) {
-        console.log("erroumuz ", error);
+        if (error.response && error.response.status === 401) {
+          throw new AuthenticationError(
+            `Unauthorized GitHub access. ${error.response.status}`
+          );
+        }
+        throw new Error("Internal error happened" + error.message);
       }
     },
-    async getCommitsBefore(_, { endCursor, number }) {
-      if (!number) {
-        number = 3;
-      }
-      const query = JSON.stringify(getCommitsBefore(endCursor, number));
+    async getCommitDetail(_, { oid }) {
       try {
-        const response = await axios.post(GITHUB_API_URL, query, {
-          headers,
+        const query = JSON.stringify({
+          query: GET_COMMIT_DETAIL,
+          variables: { oid },
         });
-
+        const response = await axios.post(GITHUB_API_URL, query, { headers });
         if (response.data.errors) {
-          throw new Error(response.data.errors);
+          throw new Error(response.data.errors[0].message);
         }
+        const parsedResponse = parseCommitDetails(response);
 
-        const parsedRespone = parseResponse(response);
-        return parsedRespone;
+        // get edited files information from GitHub REST API.
+        const res = await axios.get(
+          `https://api.github.com/repos/facebook/react/commits/${oid}`,
+          { headers }
+        );
+        parsedResponse.files = res.data.files;
+        return parsedResponse;
       } catch (error) {
-        console.log("erroumuz ", error);
-      }
-    },
-    async getFirstCommits(_, { number }) {
-      const query = JSON.stringify(getFirstCommits(number));
-      try {
-        const response = await axios.post(GITHUB_API_URL, query, {
-          headers,
-        });
-
-        if (response.data.errors) {
-          throw new Error(response.data.errors);
+        if (error.response) {
+          if (error.response.status === 422) {
+            throw new Error("Invalid oid for commit");
+          } else if (error.response.status === 401) {
+            throw new AuthenticationError(
+              `Unauthorized GitHub access. ${error.response.status}`
+            );
+          }
         }
-        const parsedRespone = parseResponse(response);
-        return parsedRespone;
-      } catch (error) {
-        console.log("erroumuz ", error);
+        if (error.message.includes("oid")) {
+          throw new Error("Invalid oid for commit");
+        }
+        throw new Error("Internal server error!");
       }
     },
   },
