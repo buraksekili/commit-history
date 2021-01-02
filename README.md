@@ -10,7 +10,7 @@ Commit History is an application that lists the commits of [React](https://githu
     ```
 2. Use the [npm](https://www.npmjs.com/) to install project dependencies respectively.
     ```bash
-    npm localDev 
+    npm run localDev 
     ```
     or
 
