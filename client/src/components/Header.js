@@ -1,11 +1,11 @@
 import { GithubFilled, GithubOutlined } from "@ant-design/icons";
-import { Button, PageHeader } from "antd";
+import { Button, Divider, PageHeader } from "antd";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import SearchInput from "./SearchInput";
 import "./styles/Header.css";
 
-const Header = ({ back }) => {
+const Header = ({ back, setFilterTerm }) => {
   const history = useHistory();
   return (
     <>
@@ -28,7 +28,7 @@ const Header = ({ back }) => {
           className="site-page-header"
           title="Commits"
           subTitle="Burak Sekili"
-          tags={<SearchInput />}
+          tags={<SearchInput setFilterTerm={setFilterTerm} />}
           extra={[
             <Button
               style={{ border: 0, backgroundColor: "transparent" }}
@@ -38,6 +38,7 @@ const Header = ({ back }) => {
           ]}
         />
       )}
+      <Divider />
     </>
   );
 };

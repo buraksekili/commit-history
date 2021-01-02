@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import Commit from "../components/Commit";
+import CommitDetail from "../components/CommitDetail";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { GET_COMMIT_DETAILS } from "../graphql/queries";
 
@@ -12,7 +12,7 @@ const CommitDetails = ({ oid }) => {
   return (
     <>
       {data && data.getCommitDetail ? (
-        <Commit
+        <CommitDetail
           commit={data.getCommitDetail}
           files={data.getCommitDetail.files}
         />

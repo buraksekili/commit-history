@@ -1,4 +1,4 @@
-import { Avatar, Col, Modal, Row, Typography } from "antd";
+import { Avatar, Button, Col, Modal, Row, Typography } from "antd";
 import React from "react";
 const { Paragraph } = Typography;
 
@@ -16,9 +16,16 @@ const UserModal = ({ isModalVisible, handleOk, handleCancel, author }) => {
     <>
       {author && (
         <Modal
+          closable
+          key={4}
           title={`${author.name} profile`}
           visible={isModalVisible}
-          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button type="primary" onClick={handleOk}>
+              OK
+            </Button>,
+          ]}
         >
           <Row align="middle" justify="space-around">
             <Col>

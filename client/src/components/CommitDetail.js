@@ -18,7 +18,7 @@ const styles = {
   padding: "0.3em",
 };
 
-const Commit = ({ commit, files }) => {
+const CommitDetail = ({ commit, files }) => {
   const {
     additions,
     author,
@@ -112,4 +112,4 @@ const Commit = ({ commit, files }) => {
   );
 };
 
-export default Commit;
+export default CommitDetail;
