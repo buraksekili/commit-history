@@ -26,7 +26,7 @@ Commit History is an application that lists the commits of [React](https://githu
 3. Add your access token to the .env file as follows;
 
     ```bash
-    TOKEN=<your_access_token>
+    REACT_APP_GITHUB_TOKEN=<your_access_token>
     ```
 
   That's it for the GitHub authentication.
