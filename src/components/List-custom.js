@@ -62,7 +62,6 @@ const ListCustom = ({
     setIsModalVisible(false);
   };
 
-  console.log(commits);
   return (
     <div>
       {commits && (
