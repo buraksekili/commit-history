@@ -31,25 +31,37 @@ const UserModal = ({ isModalVisible, handleOk, handleCancel, author }) => {
             <Col>
               <Avatar size={responsiveSize} src={author.avatarUrl} />
             </Col>
-            <Col span={16}>
-              <Row align="middle" justify="center" wrap={true}>
-                <Link href={author.user.url} target="_blank">
-                  {`${author.user.login} / ${author.name}`}
-                </Link>
-              </Row>
-
-              <Row align="middle" justify="center" wrap={true}>
-                <Paragraph style={{ marginBottom: 3 }}>
-                  {author.user.bio}
-                </Paragraph>
-              </Row>
-              <Row align="middle" justify="center" wrap={true}>
-                <Paragraph type="secondary">{author.user.location}</Paragraph>
-              </Row>
-              <Row align="middle" justify="center" wrap={true}>
-                <Paragraph>{author.email}</Paragraph>
-              </Row>
-            </Col>
+            {author.user ? (
+              <Col span={16}>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Link href={author.user.url} target="_blank">
+                    {`${author.user.login} / ${author.name}`}
+                  </Link>
+                </Row>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Paragraph style={{ marginBottom: 3 }}>
+                    {author.user.bio}
+                  </Paragraph>
+                </Row>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Paragraph type="secondary">{author.user.location}</Paragraph>
+                </Row>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Paragraph>{author.email}</Paragraph>
+                </Row>
+              </Col>
+            ) : (
+              <Col span={16}>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Paragraph style={{ marginBottom: 3 }}>
+                    {`${author.name}`}
+                  </Paragraph>
+                </Row>
+                <Row align="middle" justify="center" wrap={true}>
+                  <Paragraph>{author.email}</Paragraph>
+                </Row>
+              </Col>
+            )}
           </Row>
         </Modal>
       )}
