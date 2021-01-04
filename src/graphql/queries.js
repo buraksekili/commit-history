@@ -1,59 +1,5 @@
 import gql from "graphql-tag";
 
-// export const GET_COMMITS = gql`
-//   query($cursorBefore: String, $cursorAfter: String, $first: Int, $last: Int) {
-//     repository(name: "react", owner: "facebook") {
-//       ref(qualifiedName: "master") {
-//         target {
-//           ... on Commit {
-//             history(
-//               first: $first
-//               last: $last
-//               before: $cursorBefore
-//               after: $cursorAfter
-//             ) {
-//               totalCount
-//               pageInfo {
-//                 hasNextPage
-//                 hasPreviousPage
-//                 endCursor
-//                 startCursor
-//               }
-//               edges {
-//                 node {
-//                   messageHeadline
-//                   message
-//                   oid
-//                   abbreviatedOid
-//                   pushedDate
-//                   parents(first: 1) {
-//                     nodes {
-//                       abbreviatedOid
-//                     }
-//                   }
-//                   author {
-//                     name
-//                     email
-//                     date
-//                     avatarUrl
-//                     user {
-//                       url
-//                       bio
-//                       location
-//                       login
-//                       name
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
-
 export const GET_COMMITS = gql`
   query($cursor: String, $first: Int, $last: Int) {
     repository(name: "react", owner: "facebook") {
