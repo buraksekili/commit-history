@@ -62,6 +62,7 @@ const ListCustom = ({
     setIsModalVisible(false);
   };
 
+  console.log(commits);
   return (
     <div>
       {commits && (
@@ -115,7 +116,7 @@ const ListCustom = ({
                   }
                   description={commit.node.message}
                 />
-                {commit.node.parent && (
+                {commit.node.parents && (
                   <List.Item.Meta
                     description={` Parent Hash: ${commit.node.parents.nodes[0].abbreviatedOid}`}
                   />
