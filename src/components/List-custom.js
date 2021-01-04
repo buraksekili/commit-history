@@ -115,11 +115,13 @@ const ListCustom = ({
                   }
                   description={commit.node.message}
                 />
-                {commit.node.parents && (
-                  <List.Item.Meta
-                    description={` Parent Hash: ${commit.node.parents.nodes[0].abbreviatedOid}`}
-                  />
-                )}
+                {commit.node.parents &&
+                  commit.node.parents.nodes &&
+                  commit.node.parents.nodes.length > 0 && (
+                    <List.Item.Meta
+                      description={` Parent Hash: ${commit.node.parents.nodes[0].abbreviatedOid}`}
+                    />
+                  )}
               </List.Item>
             )}
           />
